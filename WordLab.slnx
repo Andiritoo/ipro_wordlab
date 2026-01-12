@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Aspire/">
+    <Project Path="WordLab.AppHost/AppHost.csproj" />
+    <Project Path="WordLab.ServiceDefaults/ServiceDefaults.csproj" />
+  </Folder>
+  <Project Path="DbMigrationService/DbMigrationService.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="WordLab/WordLab.csproj" />
+</Solution>
