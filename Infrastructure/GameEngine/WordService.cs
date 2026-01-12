@@ -7,15 +7,30 @@ namespace Infrastructure.GameEngine;
 
 public class WordService
 {
-    public async Task ValidateWord()
+    public void ValidateWord()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<string> GetMysteryWord()
+    public string GetMysteryWord()
     {
-        //TODO: Implement randomness ofc
-        return "VEBOS";
+        //TODO: Implement something else for now just a small list
+        var words = new List<string>
+        {
+            "APPLE",
+            "BRAVE",
+            "CHAIR",
+            "PLANT",
+            "STONE",
+            "TRAIN",
+            "SMILE",
+            "WATER"
+        };
+
+        var random = new Random();
+        var selectedWord = words[random.Next(words.Count)];
+
+        return selectedWord;
     }
 
     public List<LetterHint> GetHintsFromGuess(string mysteryWord, string guess)
@@ -50,7 +65,9 @@ public class WordService
         for (int i = 0; i < guessChars.Length; i++)
         {
             if (result[i].HintType == LetterHintType.Correct)
+            {
                 continue;
+            }
 
             // loops through the mystery word and checks if the letter is present while considering the duplicates
             for (int j = 0; j < mysteryChars.Length; j++)
