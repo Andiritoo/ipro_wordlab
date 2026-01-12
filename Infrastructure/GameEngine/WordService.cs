@@ -1,36 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using Domain;
 
 namespace Infrastructure.GameEngine;
 
 public class WordService
 {
-    public void ValidateWord()
+    private static readonly HttpClient _httpClient = new();
+
+    public async Task<bool> ValidateWord(string word)
     {
-        throw new NotImplementedException();
+        var url = $"https://dictionary-api-7hmy.onrender.com/define?word={word.ToLower()}";
+
+        try
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    public string GetMysteryWord()
+    public async Task<string> GetMysteryWord(int length)
     {
-        //TODO: Implement something else for now just a small list
-        var words = new List<string>
+        var url = $"https://random-word-api.herokuapp.com/word?length={length}";
+
+        try
         {
-            "APPLE",
-            "BRAVE",
-            "CHAIR",
-            "PLANT",
-            "STONE",
-            "TRAIN",
-            "SMILE",
-            "WATER"
-        };
+            var response = await _httpClient.GetAsync(url);
 
-        var random = new Random();
-        var selectedWord = words[random.Next(words.Count)];
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("There was an Error trying to get a mystery word.");
+            }
 
-        return selectedWord;
+            var json = await response.Content.ReadAsStringAsync();
+
+            // Deserialize ["cookeys"] → string[]
+            var words = JsonSerializer.Deserialize<string[]>(json);
+
+            if (words == null || words.Length == 0)
+            {
+                throw new Exception("API returned no words.");
+            }
+
+            return words[0].ToUpper();
+        }
+        catch
+        {
+            throw new Exception("There was an Error trying to get a mystery word.");
+        }
     }
 
     public List<LetterHint> GetHintsFromGuess(string mysteryWord, string guess)

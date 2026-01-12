@@ -1,15 +1,18 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Threading.Tasks;
 using Domain;
 using Infrastructure.GameEngine;
 
 
 class Program
 {
-    static void Main()
+    static async Task Main()
     {
+        int wordLength = 5;
+
         var wordService = new WordService();
-        var mysteryWord = wordService.GetMysteryWord();
+        var mysteryWord = await wordService.GetMysteryWord(wordLength);
 
         Console.WriteLine($"Ein geheimes Wort wurde ausgewählt. Errate das Wort mit {mysteryWord.Length} Buchstaben.");
         Console.WriteLine("Du hast 6 Versuche. Richtige Buchstaben sind in [] eingerahmt und Buchstaben die vorkommen in ()\n");
@@ -24,6 +27,12 @@ class Program
             if (string.IsNullOrWhiteSpace(guess) || guess.Length != mysteryWord.Length)
             {
                 Console.WriteLine("Ungültige Eingabe.\n");
+                attempt--;
+                continue;
+            }
+            else if(!await wordService.ValidateWord(guess))
+            {
+                Console.WriteLine("Dieses Wort existiert nicht.\n");
                 attempt--;
                 continue;
             }
