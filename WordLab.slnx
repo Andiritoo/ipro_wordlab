@@ -8,4 +8,5 @@
   <Project Path="GameEngineTest/GameEngineTest.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
   <Project Path="WordLab/WordLab.csproj" />
+  <Project Path="WordLabTests/WordLabTests.csproj" Id="58af4449-4799-451e-8f03-f3180dc5c552" />
 </Solution>
