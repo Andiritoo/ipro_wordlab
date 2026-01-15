@@ -67,18 +67,17 @@ public class WordService
         }
 
         var result = new List<LetterHint>();
-        var mysteryChars = mysteryWord.ToCharArray();
         var guessChars = guess.ToCharArray();
 
-        var used = new bool[mysteryChars.Length];
+        (char Letter, bool WasUsed)[] mystery = mysteryWord.Select(c => (c, false)).ToArray();
 
         // Check for correct letters
         for (int i = 0; i < guessChars.Length; i++)
         {
-            if (guessChars[i] == mysteryChars[i])
+            if (guessChars[i] == mystery[i].Letter)
             {
                 result.Add(new LetterHint(guessChars[i], LetterHintType.Correct));
-                used[i] = true;
+                mystery[i].WasUsed = true;
             }
             else
             {
@@ -96,12 +95,12 @@ public class WordService
             }
 
             // loops through the mystery word and checks if the letter is present while considering the duplicates
-            for (int j = 0; j < mysteryChars.Length; j++)
+            for (int j = 0; j < mystery.Length; j++)
             {
-                if (!used[j] && guessChars[i] == mysteryChars[j])
+                if (!mystery[j].WasUsed && guessChars[i] == mystery[j].Letter)
                 {
                     result[i].HintType = LetterHintType.Present;
-                    used[j] = true;
+                    mystery[j].WasUsed = true;
                     break;
                 }
             }
