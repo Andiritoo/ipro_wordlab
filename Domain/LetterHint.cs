@@ -2,13 +2,19 @@
 
 public class LetterHint
 {
-    public LetterHint(char letter, LetterHintType hintType)
+    public LetterHint()
+    {
+        Letter = null;
+        HintType = LetterHintType.None;
+    }
+
+    public LetterHint(char? letter, LetterHintType hintType)
     {
         Letter = letter;
         HintType = hintType;
     }
 
-    public char Letter { get; set; }
+    public char? Letter { get; set; }
 
     public LetterHintType HintType { get; set; }
 }

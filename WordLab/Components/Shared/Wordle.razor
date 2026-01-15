@@ -1,0 +1,14 @@
+﻿<div class="mt-4">
+    @for (int i = 0; i < 6; i++)
+    {
+        <div class="guess-row">
+            @for (int j = 0; j < WordLength; j++)
+            {
+                if (Guesses[i][j] is not null)
+                {
+                    <BoxedLetter LetterHint="Guesses[i][j]" />
+                }
+            }
+        </div>
+    }
+</div>

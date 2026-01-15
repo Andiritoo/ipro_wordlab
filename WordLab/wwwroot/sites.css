@@ -1,0 +1,42 @@
+﻿.boxed-letter {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #3a3a3c;
+    border-radius: 6px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: #121213;
+    color: white;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.correct-letter {
+    background-color: #538d4e;
+    border-color: #538d4e;
+}
+
+.present-letter {
+    background-color: #b59f3b;
+    border-color: #b59f3b;
+}
+
+.absent-letter {
+    background-color: #3a3a3c;
+    border-color: #3a3a3c;
+}
+
+.empty-letter {
+    background-color: #121213;
+    border-color: #3a3a3c;
+}
+
+.guess-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    justify-content: center;
+}

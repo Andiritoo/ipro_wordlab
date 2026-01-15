@@ -1,5 +1,6 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
 }
 
 a, .btn-link {
@@ -58,3 +59,55 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+.app-layout {
+    min-height: 100vh;
+    background-color: #121212;
+}
+
+.main-content {
+    padding-top: 64px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: #1e1e1e;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 1000;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.nav-spacer {
+    width: 40px;
+}
+
+.nav-logo {
+    height: 36px;
+    cursor: pointer;
+}
+
+    .nav-logo:hover {
+        opacity: 0.85;
+    }
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+    .settings-btn:hover {
+        color: white;
+    }

@@ -6,7 +6,8 @@ namespace Domain;
 
 public enum LetterHintType
 {
-    Absent, // grey
-    Present, // yellow
-    Correct  // green
+    None,
+    Absent,
+    Present,
+    Correct
 }
