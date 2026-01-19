@@ -1,14 +1,23 @@
-﻿<div class="mt-4">
-    @for (int i = 0; i < 6; i++)
-    {
-        <div class="guess-row">
-            @for (int j = 0; j < WordLength; j++)
-            {
-                if (Guesses[i][j] is not null)
+﻿@using Domain
+@rendermode InteractiveServer
+
+<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+    <div class="mt-4">
+        @for (int i = 0; i < 6; i++)
+        {
+            <div class="guess-row">
+                @for (int j = 0; j < WordLength; j++)
                 {
-                    <BoxedLetter LetterHint="Guesses[i][j]" />
+                    if (Guesses[i][j] is not null)
+                    {
+                        <BoxedLetter LetterHint="Guesses[i][j]" />
+                    }
                 }
-            }
-        </div>
-    }
-</div>
+            </div>
+        }
+    </div>
+
+    <div style="margin-top: auto; margin-bottom: 50px;">
+        <KeyboardHints AllHints="@AllHints" />
+    </div>
+</FluentStack>

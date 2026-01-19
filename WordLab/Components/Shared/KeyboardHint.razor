@@ -1,0 +1,22 @@
+﻿@using Domain
+<div class="boxed-letter @HintClass">
+    @if (Letter is not null)
+    {
+        @Letter
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public string Letter { get; set; }
+
+    [Parameter]
+    public LetterHint LetterHint { get; set; }
+
+    private string HintClass => LetterHint is null ? "empty-letter" 
+        : LetterHint.HintType == LetterHintType.Correct ? "correct-letter"
+        : LetterHint.HintType == LetterHintType.Present ? "present-letter"
+        : LetterHint.HintType == LetterHintType.Absent ? "absent-letter"
+        : "empty-letter";
+}

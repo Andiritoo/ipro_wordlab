@@ -3,6 +3,18 @@ html, body {
     color: white;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
+    font-weight: var(--font-weight);
+    color: var(--neutral-foreground-rest);
+    background: var(--neutral-fill-layer-rest);
+}
+
 a, .btn-link {
     color: #006bb7;
 }
@@ -83,7 +95,7 @@ h1:focus {
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
-    z-index: 1000;
+    z-index: 100;
     border-bottom: 1px solid #2a2a2a;
 }
 

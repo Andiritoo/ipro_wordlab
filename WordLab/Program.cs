@@ -1,12 +1,24 @@
+using Infrastructure.GameEngine;
+using Microsoft.FluentUI.AspNetCore.Components;
 using WordLab.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddHttpClient();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddFluentUIComponents(options =>
+{
+    options.ValidateClassNames = false;
+});
+
+builder.Services.AddScoped<WordService>();
+
 
 var app = builder.Build();
 

@@ -1,0 +1,46 @@
+﻿@using Domain
+@if (AllHints is not null)
+{
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+            <KeyboardHint Letter="Q" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'Q')" />
+            <KeyboardHint Letter="W" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'W')" />
+            <KeyboardHint Letter="E" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'E')" />
+            <KeyboardHint Letter="R" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'R')" />
+            <KeyboardHint Letter="T" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'T')" />
+            <KeyboardHint Letter="Z" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'Z')" />
+            <KeyboardHint Letter="U" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'U')" />
+            <KeyboardHint Letter="I" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'I')" />
+            <KeyboardHint Letter="O" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'O')" />
+            <KeyboardHint Letter="P" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'P')" />
+        </FluentStack>
+
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+            <KeyboardHint Letter="A" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'A')" />
+            <KeyboardHint Letter="S" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'S')" />
+            <KeyboardHint Letter="D" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'D')" />
+            <KeyboardHint Letter="F" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'F')" />
+            <KeyboardHint Letter="G" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'G')" />
+            <KeyboardHint Letter="H" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'H')" />
+            <KeyboardHint Letter="J" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'J')" />
+            <KeyboardHint Letter="K" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'K')" />
+            <KeyboardHint Letter="L" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'L')" />
+        </FluentStack>
+
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+            <KeyboardHint Letter="Y" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'Y')" />
+            <KeyboardHint Letter="X" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'X')" />
+            <KeyboardHint Letter="C" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'C')" />
+            <KeyboardHint Letter="V" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'V')" />
+            <KeyboardHint Letter="B" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'B')" />
+            <KeyboardHint Letter="N" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'N')" />
+            <KeyboardHint Letter="M" LetterHint="@AllHints.FirstOrDefault(x => x.Letter == 'M')" />
+        </FluentStack>
+
+    </FluentStack>
+}
+
+@code {
+    [Parameter]
+    public List<LetterHint> AllHints { get; set; }
+}
