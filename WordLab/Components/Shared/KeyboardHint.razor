@@ -1,5 +1,5 @@
 ﻿@using Domain
-<div class="boxed-letter @HintClass">
+<div class="boxed-letter @HintClass @(Letter.Length > 1 ? "wide": "")" @onclick="@LetterPressed">
     @if (Letter is not null)
     {
         @Letter
@@ -14,9 +14,17 @@
     [Parameter]
     public LetterHint LetterHint { get; set; }
 
-    private string HintClass => LetterHint is null ? "empty-letter" 
+    [Parameter]
+    public EventCallback<string> OnLetterClicked { get; set; }
+
+    private string HintClass => LetterHint is null ? "absent-letter"
         : LetterHint.HintType == LetterHintType.Correct ? "correct-letter"
         : LetterHint.HintType == LetterHintType.Present ? "present-letter"
-        : LetterHint.HintType == LetterHintType.Absent ? "absent-letter"
-        : "empty-letter";
+        : LetterHint.HintType == LetterHintType.Absent ? "empty-letter"
+        : "absent-letter";
+
+    public async Task LetterPressed()
+    {
+        await OnLetterClicked.InvokeAsync(Letter);
+    }
 }

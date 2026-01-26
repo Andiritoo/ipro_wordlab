@@ -67,6 +67,11 @@ public partial class Wordle
     [JSInvokable]
     public void OnGlobalKey(string key)
     {
+        if(GuessCount >= 6)
+        {
+            return;
+        }
+
         var currentWord = Guesses[GuessCount];
 
         if (!string.IsNullOrEmpty(key) && key.Length == 1 && char.IsLetter(key[0]))
@@ -86,7 +91,7 @@ public partial class Wordle
         {
             if (currentWord.Any(x => x.Letter == null))
             {
-                ShowErrorMessage($"Ungültige Eingabe: Das Wort muss {WordLength} Buchstaben lang sein.");
+                ShowMessage(ToastIntent.Error, $"Ungültige Eingabe: Das Wort muss {WordLength} Buchstaben lang sein.");
             }
             else
             {
@@ -95,7 +100,7 @@ public partial class Wordle
         }
         else
         {
-            //TODO: Handle invalid key
+            ShowMessage(ToastIntent.Warning, "Ungültiger Buchstabe!");
         }
 
         StateHasChanged();
@@ -107,7 +112,7 @@ public partial class Wordle
 
         if (!await _wordService.ValidateWord(guess))
         {
-            ShowErrorMessage("Dieses Wort existiert nicht.");
+            ShowMessage(ToastIntent.Error, "Dieses Wort existiert nicht.");
             return;
         }
 
@@ -132,7 +137,7 @@ public partial class Wordle
         catch (Exception ex)
         {
             //TODO: Specify exception and handle error
-            ShowErrorMessage(ex.Message);
+            ShowMessage(ToastIntent.Error, ex.Message);
         }
 
         StateHasChanged();
@@ -146,9 +151,8 @@ public partial class Wordle
         StateHasChanged();
     }
 
-    public void ShowErrorMessage(string errorMessage)
+    public void ShowMessage(ToastIntent intent, string errorMessage)
     {
-        var intent = ToastIntent.Error;
         ToastService.ShowToast(intent, errorMessage);
     }
 

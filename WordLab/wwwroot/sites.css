@@ -12,7 +12,13 @@
     background-color: #121213;
     color: white;
     transition: background-color 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
 }
+
+    .boxed-letter.wide {
+        width: 120px;
+        font-size: 1.2rem;
+    }
 
 .correct-letter {
     background-color: #538d4e;
