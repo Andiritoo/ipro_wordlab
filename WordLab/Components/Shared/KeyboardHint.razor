@@ -1,5 +1,5 @@
 ﻿@using Domain
-<div class="boxed-letter @HintClass @(Letter.Length > 1 ? "wide": "")" @onclick="@LetterPressed">
+<div class="boxed-letter no-select @HintClass @(Letter.Length > 1 ? "wide": "")" @onclick="@LetterPressed">
     @if (Letter is not null)
     {
         @Letter

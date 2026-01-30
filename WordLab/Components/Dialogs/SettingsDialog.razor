@@ -1,0 +1,35 @@
+﻿@using Domain
+@implements IDialogContentComponent<WordleSettings>
+
+<FluentDialogHeader>
+    <FluentLabel Typo="Typography.PaneHeader">
+        Wordle Settings
+    </FluentLabel>
+</FluentDialogHeader>
+<FluentDialogBody>
+    <FluentStack Orientation="Orientation.Vertical">
+        <FluentTextField Label="Username"
+                         Placeholder="Enter your name"
+                         @bind-Value="Content.CurrentUsername" />
+        <FluentNumberField Label="Word length"
+                           Min="3"
+                           Max="10"
+                           Step="1"
+                           @bind-Value="Content.WordLength" />
+        <FluentNumberField Label="Max guesses"
+                           Min="1"
+                           Max="10"
+                           Step="1"
+                           @bind-Value="Content.MaxGuesses" />
+        <FluentCheckbox Label="Hard mode"
+                        @bind-Checked="Content.HardMode" />
+    </FluentStack>
+</FluentDialogBody>
+<div class="mt-2">
+    <FluentDialogFooter>
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End" HorizontalGap="10">
+            <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Save())" OnClick="@SaveAsync">Speichern & neu laden</FluentButton>
+            <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size16.Dismiss())" OnClick="@CancelAsync">Abbrechen</FluentButton>
+        </FluentStack>
+    </FluentDialogFooter>
+</div>

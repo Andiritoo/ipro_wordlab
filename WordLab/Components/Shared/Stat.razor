@@ -1,0 +1,9 @@
+﻿@code {
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public object Value { get; set; } = "";
+}
+
+<FluentStack Orientation="Orientation.Vertical">
+    <FluentLabel Typo="Typography.Body">@Label</FluentLabel>
+    <FluentLabel Typo="Typography.H3"><b>@Value</b></FluentLabel>
+</FluentStack>

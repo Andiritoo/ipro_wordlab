@@ -1,6 +1,9 @@
+using Domain;
 using Infrastructure.GameEngine;
+using Infrastructure.Storage;
 using Microsoft.FluentUI.AspNetCore.Components;
 using WordLab.Components;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,8 @@ builder.Services.AddFluentUIComponents(options =>
 });
 
 builder.Services.AddScoped<WordService>();
+builder.Services.AddScoped<StatisticStorageService>();
+builder.Services.AddCascadingValue("Settings", sp => new WordleSettings());
 
 
 var app = builder.Build();

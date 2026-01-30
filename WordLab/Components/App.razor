@@ -15,11 +15,11 @@
     <link rel="icon" type="image/png" href="/img/favicon_W.png" />
     <script src="js/keyboard.js"></script>
     <script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js" type="module" async></script>
-    <HeadOutlet />
+    <HeadOutlet @rendermode="InteractiveServer"/>
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="InteractiveServer"/>
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
     <FluentDesignTheme Mode="DesignThemeModes.Dark" />

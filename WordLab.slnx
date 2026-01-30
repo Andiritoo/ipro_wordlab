@@ -3,7 +3,6 @@
     <Project Path="WordLab.AppHost/AppHost.csproj" />
     <Project Path="WordLab.ServiceDefaults/ServiceDefaults.csproj" />
   </Folder>
-  <Project Path="DbMigrationService/DbMigrationService.csproj" />
   <Project Path="Domain/Domain.csproj" />
   <Project Path="GameEngineTest/GameEngineTest.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />

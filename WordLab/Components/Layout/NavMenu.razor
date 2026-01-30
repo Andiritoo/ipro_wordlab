@@ -8,8 +8,13 @@
          class="nav-logo"
          @onclick="@(() => NavManager.NavigateTo("/"))" />
 
-    <button class="settings-btn">
-        <span class="bi bi-gear-fill"></span>
-    </button>
-
+    <div>
+        <button class="statistics-btn" @onclick="OpenStatisticsDialog">
+            <span class="bi bi-bar-chart-fill"></span>
+        </button>
+        <button class="settings-btn" @onclick="@OpenSettingsDialog">
+            <span class="bi bi-gear-fill"></span>
+        </button>
+    </div>
 </div>
+

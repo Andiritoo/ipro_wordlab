@@ -1,12 +1,15 @@
-﻿@using Domain
+﻿@page "/"
+@using Domain
 @rendermode InteractiveServer
+
+<PageTitle>WordLab</PageTitle>
 
 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
     <div class="mt-4">
-        @for (int i = 0; i < 6; i++)
+        @for (int i = 0; i < Settings.MaxGuesses; i++)
         {
             <div class="guess-row">
-                @for (int j = 0; j < WordLength; j++)
+                @for (int j = 0; j < Settings.WordLength; j++)
                 {
                     if (Guesses[i][j] is not null)
                     {

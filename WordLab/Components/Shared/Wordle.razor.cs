@@ -2,6 +2,7 @@ using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
 using Domain;
 using Infrastructure.GameEngine;
+using Infrastructure.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -12,20 +13,24 @@ namespace WordLab.Components.Shared;
 
 public partial class Wordle
 {
-    [Parameter]
-    public int? WordLength { get; set; } = 5;
-
-    [Parameter]
-    public int? MaxGuesses { get; set; } = 6;
-
     [Inject]
     public WordService _wordService { get; set; }
+
+    [Inject]
+    public StatisticStorageService _storageService { get; set; }
 
     [Inject]
     public IJSRuntime _jsRuntime { get; set; }
 
     [Inject]
     public IToastService ToastService { get; set; }
+
+    [CascadingParameter(Name = "Settings")]
+    public WordleSettings? Settings { get; set; } = new();
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Reload { get; set; }
 
     public string MysteryWord { get; set; }
 
@@ -34,25 +39,19 @@ public partial class Wordle
     // For Keyboard display
     public List<LetterHint> AllHints { get; set; } = new List<LetterHint>();
 
+    public Statistics Statistics { get; set; }
+
     public int GuessCount { get; set; }
 
     private ElementReference KeyboardDiv;
 
+    private DateTime _gameStartTimeUtc;
+
     protected override async Task OnParametersSetAsync()
     {
-        // Initiate Grid with "Empty" Values
-        Guesses = new LetterHint[MaxGuesses.Value][];
-        for (int i = 0; i < MaxGuesses; i++)
-        {
-            Guesses[i] = new LetterHint[WordLength.Value];
+        Statistics = await _storageService.LoadAsync(Settings.CurrentUsername);
 
-            for (int j = 0; j < WordLength.Value; j++)
-            {
-                Guesses[i][j] = new LetterHint();
-            }
-        }
-
-        MysteryWord = await _wordService.GetMysteryWord(WordLength.Value);
+        await ResetGameAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -63,11 +62,31 @@ public partial class Wordle
         }
     }
 
+    public async Task ResetGameAsync()
+    {
+        AllHints = new List<LetterHint>();
+        GuessCount = 0;
+        _gameStartTimeUtc = DateTime.UtcNow;
+
+        // Initiate Grid with "Empty" Values
+        Guesses = new LetterHint[Settings.MaxGuesses][];
+        for (int i = 0; i < Settings.MaxGuesses; i++)
+        {
+            Guesses[i] = new LetterHint[Settings.WordLength];
+
+            for (int j = 0; j < Settings.WordLength; j++)
+            {
+                Guesses[i][j] = new LetterHint();
+            }
+        }
+
+        MysteryWord = await _wordService.GetMysteryWord(Settings.WordLength);
+    }
 
     [JSInvokable]
     public void OnGlobalKey(string key)
     {
-        if(GuessCount >= 6)
+        if (!Settings.IsKeyboardActive || GuessCount >= Settings.MaxGuesses)
         {
             return;
         }
@@ -91,7 +110,7 @@ public partial class Wordle
         {
             if (currentWord.Any(x => x.Letter == null))
             {
-                ShowMessage(ToastIntent.Error, $"Ungültige Eingabe: Das Wort muss {WordLength} Buchstaben lang sein.");
+                ShowMessage(ToastIntent.Error, $"Ungültige Eingabe: Das Wort muss {Settings.WordLength} Buchstaben lang sein.");
             }
             else
             {
@@ -124,14 +143,14 @@ public partial class Wordle
 
             if (Guesses[GuessCount].All(x => x.HintType == LetterHintType.Correct))
             {
-                MysteryWordGuessed();
+                await MysteryWordGuessed();
             }
 
             GuessCount++;
 
-            if(GuessCount == MaxGuesses)
+            if(GuessCount == Settings.MaxGuesses)
             {
-                WordNotGuessed();
+                await WordNotGuessed();
             }
         }
         catch (Exception ex)
@@ -156,15 +175,33 @@ public partial class Wordle
         ToastService.ShowToast(intent, errorMessage);
     }
 
-    public void MysteryWordGuessed()
+    public async Task MysteryWordGuessed()
     {
         var intent = ToastIntent.Success;
         ToastService.ShowToast(intent, "Herzlichen Glückwunsch! Sie haben das Wort erraten.");
+
+        await UpdateStatistics(true);
     }
 
-    public void WordNotGuessed()
+    public async Task WordNotGuessed()
     {
         var intent = ToastIntent.Error;
         ToastService.ShowToast(intent, $"Keine Versuche mehr! Das Wort war: {MysteryWord}.");
+
+        GuessCount++;
+        await UpdateStatistics(false);
+    }
+
+    public async Task UpdateStatistics(bool won)
+    {
+        var duration = DateTime.UtcNow - _gameStartTimeUtc;
+
+        Statistics.RegisterGame(
+            guesses: GuessCount,
+            duration: duration,
+            won: true
+        );
+
+        await _storageService.SaveAsync(Statistics);
     }
 }

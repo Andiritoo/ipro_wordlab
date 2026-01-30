@@ -14,7 +14,7 @@ public class WordService
 
     public async Task<bool> ValidateWord(string word)
     {
-        var url = $"https://dictionary-api-7hmy.onrender.com/define?word={word.ToLower()}";
+        var url = $"https://api.dictionaryapi.dev/api/v2/entries/en/{word.ToLower()}";
 
         try
         {
@@ -22,7 +22,7 @@ public class WordService
 
             return response.StatusCode == HttpStatusCode.OK;
         }
-        catch
+        catch (Exception ex)
         {
             return false;
         }
