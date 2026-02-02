@@ -47,6 +47,10 @@ public partial class Wordle
 
     private DateTime _gameStartTimeUtc;
 
+    /// <summary>
+    /// This method is part of the Blazor Lifecycle and is executed when parameters are set.
+    /// Statistics are loaded and a new game is started.
+    /// </summary>
     protected override async Task OnParametersSetAsync()
     {
         Statistics = await _storageService.LoadAsync(Settings.CurrentUsername);
@@ -54,6 +58,10 @@ public partial class Wordle
         await ResetGameAsync();
     }
 
+    /// <summary>
+    /// This method is part of the Blazor Lifecycle and is executed when parameters are set.
+    /// Registers the JavaScript function for global keyboard input.
+    /// </summary>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -62,6 +70,12 @@ public partial class Wordle
         }
     }
 
+    /// <summary>
+    /// Asynchronously resets the game state to start a new game session.
+    /// </summary>
+    /// <remarks>This method clears all previous guesses, resets the guess count, initializes the game grid,
+    /// and retrieves a new mystery word based on the current settings. Call this method to begin a new game or to
+    /// restart after a completed session.</remarks>
     public async Task ResetGameAsync()
     {
         AllHints = new List<LetterHint>();
@@ -83,6 +97,12 @@ public partial class Wordle
         MysteryWord = await _wordService.GetMysteryWord(Settings.WordLength);
     }
 
+    /// <summary>
+    /// Handles a global keyboard event by processing the specified key input according to the current game state.
+    /// </summary>
+    /// <remarks>The method ignores input if keyboard interaction is disabled or the maximum number of guesses has been
+    /// reached.</remarks>
+    /// <param name="key">The key value representing the user's input. This can be a single letter, "Backspace", or "Enter".</param>
     [JSInvokable]
     public void OnGlobalKey(string key)
     {
@@ -125,6 +145,13 @@ public partial class Wordle
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Processes the current guess, validates it as a word, updates hint information, and advances the game state
+    /// accordingly.
+    /// </summary>
+    /// <remarks>If the guess is not a valid word, an error message is displayed and the game state is not
+    /// updated. If the guess is correct or the maximum number of guesses is reached, the appropriate end-of-game logic
+    /// is triggered. This method should be called in response to a user submitting a guess.</remarks>
     private async Task SubmitGuess()
     {
         var guess = string.Concat(Guesses[GuessCount].Select(x => x.Letter)).ToUpper();
@@ -164,19 +191,20 @@ public partial class Wordle
         StateHasChanged();
     }
 
-    public void UpdateBoxedLetters(char letter)
+    /// <summary>
+    /// Displays a Toast Message.
+    /// </summary>
+    /// <param name="intent">Intent of the toast e.g. Warning, Error or Success</param>
+    /// <param name="message">Message to be displayed in the toast.</param>
+    public void ShowMessage(ToastIntent intent, string message)
     {
-        var currentWord = Guesses[GuessCount];
-
-        currentWord.FirstOrDefault(lh => lh.Letter == null)?.Letter = letter;
-        StateHasChanged();
+        ToastService.ShowToast(intent, message);
     }
 
-    public void ShowMessage(ToastIntent intent, string errorMessage)
-    {
-        ToastService.ShowToast(intent, errorMessage);
-    }
-
+    /// <summary>
+    /// Wordle succeded, user correctly guessed the mystery word.
+    /// Updates Statistics and shows a success toast.
+    /// </summary>
     public async Task MysteryWordGuessed()
     {
         var intent = ToastIntent.Success;
@@ -186,6 +214,10 @@ public partial class Wordle
         await UpdateStatistics(true);
     }
 
+    /// <summary>
+    /// Wordle failed, user did not guess the mystery word.
+    /// Updates Statistics and shows a fail toast.
+    /// </summary>
     public async Task WordNotGuessed()
     {
         var intent = ToastIntent.Error;
@@ -195,6 +227,10 @@ public partial class Wordle
         await UpdateStatistics(false);
     }
 
+    /// <summary>
+    /// Updates the statistics based on the result of the Wordle game.
+    /// </summary>
+    /// <param name="won">Represents whether or not the mystery word was found.</param>
     public async Task UpdateStatistics(bool won)
     {
         var duration = DateTime.UtcNow - _gameStartTimeUtc;

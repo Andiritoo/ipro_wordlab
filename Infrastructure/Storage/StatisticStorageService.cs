@@ -16,6 +16,12 @@ public class StatisticStorageService
         WriteIndented = true
     };
 
+    /// <summary>
+    /// Asynchronously saves the specified statistics to persistent storage, replacing any existing entry for the same
+    /// user.
+    /// </summary>
+    /// <param name="statistics">The statistics object to save. Cannot be null. The user's name is used to identify and replace any existing
+    /// entry.</param>
     public async Task SaveAsync(Statistics statistics)
     {
         List<Statistics> statisticsList;
@@ -40,9 +46,13 @@ public class StatisticStorageService
         await File.WriteAllTextAsync(filePath, json);
     }
 
+    /// <summary>
+    /// Loads the Statistics from the .json file at the specified filepath
+    /// </summary>
+    /// <param name="userName">The username of which the statistic should be loaded</param>
+    /// <returns>A Statistics Object filled with the stats of the user passed in the username Parameter</returns>
     public async Task<Statistics> LoadAsync(string userName)
     {
-        //TODO: Fix this workaround
         if(userName == string.Empty)
         {
             userName = null;

@@ -20,6 +20,9 @@ public partial class NavMenu
     [CascadingParameter(Name = "Settings")]
     public WordleSettings? Settings { get; set; }
 
+    /// <summary>
+    /// Opens the dialog that shows the Statistics
+    /// </summary>
     public async Task OpenStatisticsDialog()
     {
         Settings.IsKeyboardActive = false;
@@ -41,6 +44,11 @@ public partial class NavMenu
         Settings.IsKeyboardActive = true;
     }
 
+
+    /// <summary>
+    /// Opens the dialog to configure the settings
+    /// Updates the GlobalCascadingParameter if the Settings changed and reloads the page
+    /// </summary>
     public async Task OpenSettingsDialog()
     {
         Settings.IsKeyboardActive = false;
