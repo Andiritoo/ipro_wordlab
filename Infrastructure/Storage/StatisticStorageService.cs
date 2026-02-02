@@ -42,6 +42,12 @@ public class StatisticStorageService
 
     public async Task<Statistics> LoadAsync(string userName)
     {
+        //TODO: Fix this workaround
+        if(userName == string.Empty)
+        {
+            userName = null;
+        }
+
         if (!File.Exists(filePath))
         {
             return new Statistics();

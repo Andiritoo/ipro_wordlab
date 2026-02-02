@@ -122,3 +122,16 @@ h1:focus {
     .settings-btn:hover {
         color: white;
     }
+
+.statistics-btn {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+    .statistics-btn:hover {
+        color: white;
+    }
+

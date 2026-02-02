@@ -58,3 +58,24 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+.guess-bar-container {
+    flex: 1;
+    background-color: var(--neutral-layer-3);
+    border-radius: 4px;
+    height: 24px;
+    overflow: hidden;
+}
+
+.guess-bar {
+    height: 100%;
+    background-color: var(--accent-fill-rest);
+    color: white;
+    font-weight: 600;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}

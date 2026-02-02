@@ -145,12 +145,14 @@ public partial class Wordle
             {
                 await MysteryWordGuessed();
             }
-
-            GuessCount++;
-
-            if(GuessCount == Settings.MaxGuesses)
+            else
             {
-                await WordNotGuessed();
+                GuessCount++;
+
+                if (GuessCount == Settings.MaxGuesses)
+                {
+                    await WordNotGuessed();
+                }
             }
         }
         catch (Exception ex)
@@ -180,6 +182,7 @@ public partial class Wordle
         var intent = ToastIntent.Success;
         ToastService.ShowToast(intent, "Herzlichen Glückwunsch! Sie haben das Wort erraten.");
 
+        GuessCount++;
         await UpdateStatistics(true);
     }
 
@@ -196,11 +199,7 @@ public partial class Wordle
     {
         var duration = DateTime.UtcNow - _gameStartTimeUtc;
 
-        Statistics.RegisterGame(
-            guesses: GuessCount,
-            duration: duration,
-            won: true
-        );
+        Statistics.RegisterGame(GuessCount, duration, won);
 
         await _storageService.SaveAsync(Statistics);
     }

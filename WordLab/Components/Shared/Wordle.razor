@@ -6,17 +6,21 @@
 
 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
     <div class="mt-4">
-        @for (int i = 0; i < Settings.MaxGuesses; i++)
+        @if (Guesses is not null && Guesses.Length >= Settings.MaxGuesses && Guesses.FirstOrDefault()?.Length >= Settings.WordLength)
         {
-            <div class="guess-row">
-                @for (int j = 0; j < Settings.WordLength; j++)
-                {
-                    if (Guesses[i][j] is not null)
+            @for (int i = 0; i < Settings.MaxGuesses; i++)
+            {
+                <div class="guess-row">
+                    @for (int j = 0; j < Settings.WordLength; j++)
                     {
-                        <BoxedLetter LetterHint="Guesses[i][j]" />
+                        if (Guesses[i][j] is not null)
+                        {
+                            <BoxedLetter LetterHint="Guesses[i][j]" />
+                        }
                     }
-                }
-            </div>
+                </div>
+            }
+
         }
     </div>
 

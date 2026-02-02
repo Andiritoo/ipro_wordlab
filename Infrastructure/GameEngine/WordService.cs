@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using Domain;
@@ -28,30 +30,85 @@ public class WordService
         }
     }
 
+    public async Task<bool> ValidateWordFrequency(string word)
+    {
+        if (string.IsNullOrWhiteSpace(word))
+        {
+            return false;
+        }
+
+        var url = $"https://api.datamuse.com/words?sp={word.ToLower()}&md=f&max=1";
+
+        try
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<DatamuseWord>>(url);
+
+            // Word does not exist
+            if (response == null || response.Count == 0)
+            {
+                return false;
+            }
+
+            // For Mysteryword Check how frequent the word is used in English
+            var tags = response[0].Tags;
+            var freqTag = tags?.FirstOrDefault(t => t.StartsWith("f:"));
+
+            if (freqTag == null)
+            {
+                return false;
+            }
+
+            var frequency = double.Parse(freqTag[2..], CultureInfo.InvariantCulture);
+
+            return frequency >= 2.5;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public async Task<string> GetMysteryWord(int length)
     {
         var url = $"https://random-word-api.herokuapp.com/word?length={length}";
 
         try
         {
-            var response = await _httpClient.GetAsync(url);
+            bool wordIsValid = false;
+            string word = null;
 
-            if (!response.IsSuccessStatusCode)
+            while (!wordIsValid)
             {
-                throw new Exception("There was an Error trying to get a mystery word.");
+                var response = await _httpClient.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception("There was an Error trying to get a mystery word.");
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var words = JsonSerializer.Deserialize<string[]>(json);
+
+                if (words == null || words.Length == 0)
+                {
+                    throw new Exception("API returned no words.");
+                }
+
+                wordIsValid = await ValidateWordFrequency(words[0]);
+
+                if(wordIsValid)
+                {
+                    word = words[0];
+                }
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-
-            // Deserialize ["cookeys"] → string[]
-            var words = JsonSerializer.Deserialize<string[]>(json);
-
-            if (words == null || words.Length == 0)
+            if(word is null)
             {
-                throw new Exception("API returned no words.");
+                throw new Exception("The API didn't return a valid word, try again.");
             }
 
-            return words[0].ToUpper();
+            return word.ToUpper();
         }
         catch
         {

@@ -55,14 +55,16 @@ public class Statistics
                 MaxStreak = CurrentStreak;
             }
 
-            if (GuessDistribution.ContainsKey(guesses))
+            // Ensure all lower guess buckets exist
+            for (int i = 1; i <= guesses; i++)
             {
-                GuessDistribution[guesses]++;
+                if (!GuessDistribution.ContainsKey(i))
+                {
+                    GuessDistribution[i] = 0;
+                }
             }
-            else
-            {
-                GuessDistribution[guesses] = 1;
-            }
+
+            GuessDistribution[guesses]++;
 
             if (BestTime == null || duration < BestTime)
             {
