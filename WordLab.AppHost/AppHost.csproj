@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbMigrationService\DbMigrationService.csproj" />
     <ProjectReference Include="..\WordLab\WordLab.csproj" />
   </ItemGroup>
 
