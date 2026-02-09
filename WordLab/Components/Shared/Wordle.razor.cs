@@ -8,11 +8,18 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.JSInterop;
+using WordLab.Components.Dialogs;
 
 namespace WordLab.Components.Shared;
 
 public partial class Wordle
 {
+    [Inject]
+    public IDialogService _dialogService { get; set; }
+
+    [Inject]
+    public NavigationManager _navigationManager { get; set; }
+
     [Inject]
     public WordService _wordService { get; set; }
 
@@ -238,5 +245,38 @@ public partial class Wordle
         Statistics.RegisterGame(GuessCount, duration, won);
 
         await _storageService.SaveAsync(Statistics);
+
+        StateHasChanged();
+
+        await OpenStatisticsDialog();
+    }
+
+    /// <summary>
+    /// Opens the dialog that shows the Statistics
+    /// </summary>
+    public async Task OpenStatisticsDialog()
+    {
+        Settings.IsKeyboardActive = false;
+
+        var statistics = await _storageService.LoadAsync(Settings?.CurrentUsername ?? string.Empty);
+
+        DialogParameters parameters = new()
+        {
+            Width = "500px",
+            TrapFocus = true,
+            Modal = true,
+            PreventDismissOnOverlayClick = true,
+            PreventScroll = true,
+        };
+
+        IDialogReference dialog = await _dialogService.ShowDialogAsync<StatisticsDialog>(statistics, parameters);
+        DialogResult? result = await dialog.Result;
+
+        Settings.IsKeyboardActive = true;
+
+        if (result.Data is Statistics stats)
+        {
+            _navigationManager.NavigateTo($"/?reload={Guid.NewGuid()}");
+        }
     }
 }

@@ -11,7 +11,6 @@ public class WordleSettings
     {
         WordLength = 5;
         MaxGuesses = 6;
-        HardMode = false;
         IsKeyboardActive = true;
     }
 
@@ -20,8 +19,6 @@ public class WordleSettings
     public int WordLength { get; set; }
 
     public int MaxGuesses { get; set; }
-
-    public bool HardMode { get; set; }
 
     public bool IsKeyboardActive { get; set; }
 }

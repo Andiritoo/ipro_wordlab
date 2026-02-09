@@ -66,23 +66,12 @@
                 </FluentLabel>
             }
         </FluentStack>
-        @* <FluentStack Orientation="Orientation.Vertical" Gap="6">
-            <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold">
-                Guess distribution
-            </FluentLabel>
-
-            @foreach (var entry in Content.GuessDistribution.OrderBy(x => x.Key))
-            {
-                <FluentStack HorizontalAlignment="HorizontalAlignment.SpaceBetween">
-                    <FluentLabel>@($"{entry.Key} guesses")</FluentLabel>
-                    <FluentLabel><b>@entry.Value</b></FluentLabel>
-                </FluentStack>
-            }
-        </FluentStack> *@
-
     </FluentStack>
 </FluentDialogBody>
 <FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync">
+        Start new Wordle
+    </FluentButton>
     <FluentButton Appearance="Appearance.Neutral" OnClick="@CloseAsync">
         Close
     </FluentButton>

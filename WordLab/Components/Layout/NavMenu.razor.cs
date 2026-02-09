@@ -42,8 +42,12 @@ public partial class NavMenu
         DialogResult? result = await dialog.Result;
 
         Settings.IsKeyboardActive = true;
-    }
 
+        if (result.Data is Statistics stats)
+        {
+            _navigationManager.NavigateTo($"/?reload={Guid.NewGuid()}");
+        }
+    }
 
     /// <summary>
     /// Opens the dialog to configure the settings
