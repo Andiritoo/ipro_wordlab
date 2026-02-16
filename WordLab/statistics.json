@@ -1,24 +1,24 @@
 [
   {
     "UserName": null,
-    "GamesPlayed": 9,
-    "GamesWon": 7,
-    "GamesLost": 2,
-    "WinRate": 77.77777777777779,
+    "GamesPlayed": 18,
+    "GamesWon": 11,
+    "GamesLost": 7,
+    "WinRate": 61.111111111111114,
     "MaxStreak": 5,
-    "CurrentStreak": 5,
+    "CurrentStreak": 1,
     "GuessDistribution": {
       "1": 0,
       "2": 1,
-      "3": 0,
-      "4": 2,
+      "3": 2,
+      "4": 4,
       "5": 1,
       "6": 3
     },
-    "TotalGuesses": 33,
-    "AvgGuesses": 4.714285714285714,
-    "BestTime": "00:00:36.0636172",
-    "TotalDuration": "00:08:44.7394480",
-    "AvgDuration": "00:00:58.3043831"
+    "TotalGuesses": 47,
+    "AvgGuesses": 4.2727272727272725,
+    "BestTime": "00:00:17.4589711",
+    "TotalDuration": "00:20:43.5499293",
+    "AvgDuration": "00:01:09.0861071"
   }
 ]
